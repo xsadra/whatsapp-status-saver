@@ -5,6 +5,7 @@ const kTextColor = Color(0xFF3F4168);
 const kIconColor = Color(0xFF5E5E5E);
 
 const kDefaultPadding = 20.0;
+const kStatusImageRadius = 50.0;
 
 final kDefaultShadow = BoxShadow(
   offset: Offset(5, 5),
