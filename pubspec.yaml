@@ -1,0 +1,30 @@
+name: whatsapp_status_saver
+description: WhatsApp Status Saver
+publish_to: 'none'
+homepage: https://app.sadra.at/whatsapp-status-saver
+repository: https://github.com/xsadra/whatsapp-status-saver.git
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.3
+  google_fonts: ^2.1.0
+  flutter_svg: ^0.22.0
+  intl: ^0.17.0
+  avatar_view: ^1.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
