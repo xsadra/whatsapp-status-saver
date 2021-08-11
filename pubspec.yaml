@@ -17,6 +17,9 @@ dependencies:
   flutter_svg: ^0.22.0
   intl: ^0.17.0
   avatar_view: ^1.0.1
+  animations: ^2.0.1
+#  fluttericon 2.0.0
+  vector_math:
 
 dev_dependencies:
   flutter_test:

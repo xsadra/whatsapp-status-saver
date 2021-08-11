@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart' show GoogleFonts;
 
 import '../../../../core/configs/size_config.dart';
 
@@ -31,16 +32,17 @@ class HomeHeader extends StatelessWidget {
             SizedBox(height: getProportionateScreenHeight(77)),
             Text(
               title,
-              style: TextStyle(
+              style: GoogleFonts.zillaSlab(
                 fontSize: getProportionateScreenWidth(65),
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
                 height: 0.5,
               ),
             ),
+            VerticalSpacing(of: 6),
             Text(
               subTitle,
-              style: TextStyle(
+              style: GoogleFonts.zillaSlab(
                 color: Colors.white,
               ),
             ),

@@ -16,26 +16,24 @@ class StatusImageCollection extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: Expanded(
-        child: Row(
-          children: [
-            ...List.generate(
-              paths.length > 5 ? 5 : paths.length,
-              (index) => Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(10)),
-                child: StatusImage(imagePath: paths.elementAt(index)),
-              ),
+      child: Row(
+        children: [
+          ...List.generate(
+            paths.length > 5 ? 5 : paths.length,
+            (index) => Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: getProportionateScreenWidth(10)),
+              child: StatusImage(imagePath: paths.elementAt(index)),
             ),
-            // Spacer(),
-            if (paths.length > 5)
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(10)),
-                child: StatusImage(imagePath: 'assets/images/more.png'),
-              ),
-          ],
-        ),
+          ),
+          // Spacer(),
+          if (paths.length > 5)
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: getProportionateScreenWidth(10)),
+              child: StatusImage(imagePath: 'assets/images/more.webp'),
+            ),
+        ],
       ),
     );
   }
