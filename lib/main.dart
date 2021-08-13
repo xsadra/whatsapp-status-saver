@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'status_saver/presentation/pages/pages.dart';
+import 'status_saver/presentation/pages/pages.dart' show HomeScreen;
 
 void main() {
   runApp(MainApp());
@@ -13,9 +12,6 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Status Saver',
-      // theme: ThemeData(
-      //   primarySwatch: Colors.blue,
-      // ),
       home: HomeScreen(),
     );
   }

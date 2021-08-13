@@ -1,53 +1,71 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart' show GoogleFonts;
 
-import '../../../../core/configs/size_config.dart';
+import '../../../../core/constants/constants.dart'
+    show kDefaultPadding, kHeaderHeight;
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({
     Key? key,
-    required this.backgroundImage,
-    required this.title,
-    required this.subTitle,
   }) : super(key: key);
-
-  final String backgroundImage;
-  final String title;
-  final String subTitle;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: Alignment.center,
       children: [
-        Image.asset(
-          backgroundImage,
-          height: getProportionateScreenWidth(315),
-          fit: BoxFit.cover,
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: Image.asset(
+            'assets/images/header.jpg',
+            // height: 185,
+            fit: BoxFit.cover,
+          ),
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: getProportionateScreenHeight(77)),
-            Text(
-              title,
-              style: GoogleFonts.zillaSlab(
-                fontSize: getProportionateScreenWidth(65),
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                height: 0.5,
+        Positioned(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black12,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(kDefaultPadding),
+                bottomRight: Radius.circular(kDefaultPadding),
               ),
             ),
-            VerticalSpacing(of: 6),
-            Text(
-              subTitle,
-              style: GoogleFonts.zillaSlab(
-                color: Colors.white,
-              ),
+            height: kHeaderHeight,
+            //color: Colors.black12,
+            padding: const EdgeInsets.all(kDefaultPadding),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Spacer(),
+                    Text(
+                      "Good Morning!",
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                    Spacer(),
+                    Text(
+                      "Status Saver",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3!
+                          .copyWith(color: Colors.black54),
+                    ),
+                    Spacer(),
+                  ],
+                ),
+                Image.asset(
+                  "assets/images/whatsapp.webp",
+                  width: 36,
+                ),
+              ],
             ),
-          ],
-        )
+          ),
+        ),
       ],
     );
   }
