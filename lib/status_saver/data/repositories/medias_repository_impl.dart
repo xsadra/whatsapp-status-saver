@@ -31,7 +31,7 @@ class MediasRepositoryImpl implements MediasRepository {
 
       return Future.value(right(accountMediaSeparated));
     } catch (e) {
-      return Future.value(left(ReadWriteException()));
+      return Future.value(left(ReadWriteFailure()));
     }
   }
 
