@@ -22,6 +22,7 @@ dependencies:
   path_provider: 2.0.2
   get_it: ^7.2.0
   dartz: ^0.10.0
+  flutter_bloc: ^7.2.0
 
 
 
