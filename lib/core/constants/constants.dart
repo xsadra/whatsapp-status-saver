@@ -18,3 +18,12 @@ final kDefaultShadow = BoxShadow(
 );
 
 const kPanelTransition = Duration(milliseconds: 500);
+
+class Constants {
+  static const String SAVE_IMAGE_PATH =
+      'storage/emulated/0/Pictures/Status Saver/';
+  static const String SAVE_VIDEO_PATH =
+      'storage/emulated/0/Movies/Status Saver/';
+  static const String IMAGE_PATH = 'storage/emulated/0/Pictures/';
+  static const String VIDEO_PATH = 'storage/emulated/0/Movies/';
+}
