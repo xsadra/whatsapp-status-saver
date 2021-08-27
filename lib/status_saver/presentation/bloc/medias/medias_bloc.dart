@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:whatsapp_status_saver/status_saver/data/models/account_type.dart';
+import 'package:whatsapp_status_saver/status_saver/data/models/media_type.dart';
+import 'package:whatsapp_status_saver/status_saver/data/models/medias.dart';
 
 import '../../../../core/error/failure.dart';
 import '../../../domain/repositories/medias_repository.dart';
@@ -23,10 +26,44 @@ class MediasBloc extends Bloc<MediasEvent, MediasState> {
 
       yield failureOrAccountMedias.fold(
         (failure) => Error(message: failure.toMessage),
-        (accountMedias) => Loaded(accountMedias: accountMedias),
+        (accountMedias) {
+          return Loaded(
+            accountMedias: accountMedias,
+            whatsAppBusinessVideos: _getExpandedUris(
+                accountMedias: accountMedias,
+                accountType: AccountType.WhatsAppBusiness,
+                mediaType: MediaType.Video),
+            whatsAppBusinessImages: _getExpandedUris(
+                accountMedias: accountMedias,
+                accountType: AccountType.WhatsAppBusiness,
+                mediaType: MediaType.Image),
+            whatsAppImages: _getExpandedUris(
+                accountMedias: accountMedias,
+                accountType: AccountType.WhatsApp,
+                mediaType: MediaType.Image),
+            whatsAppVideos: _getExpandedUris(
+                accountMedias: accountMedias,
+                accountType: AccountType.WhatsApp,
+                mediaType: MediaType.Video),
+          );
+        },
       );
     } else {
       yield Error(message: 'Unexpected Event');
     }
+  }
+
+  List<Uri> _getExpandedUris(
+      {required Map<AccountType, Map<MediaType, Medias>> accountMedias,
+      required AccountType accountType,
+      required MediaType mediaType}) {
+    return accountMedias[accountType]
+            ?.entries
+            .where((element) => element.key == mediaType)
+            .map((e) => e.value)
+            .toList()
+            .expand((element) => element.uris)
+            .toList() ??
+        [];
   }
 }

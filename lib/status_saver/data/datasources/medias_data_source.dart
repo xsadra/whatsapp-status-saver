@@ -15,7 +15,7 @@ class MediasDataSourceImpl implements MediasDataSource {
   List<Uri> _getStorages() {
     //Todo: get available storages and return their Uris
     return [
-      Uri.parse('storage/emulated/0'),
+      // Uri.parse('storage/emulated/0'),
       Uri.parse('storage/emulated/0'),
       Uri.parse('storage/emulated/1'),
     ];
