@@ -1,10 +1,13 @@
 import 'dart:io';
 
-import '../models/account_type.dart';
-import '../models/medias.dart';
+import '../../../core/constants/constants.dart';
+import '../../../core/error/exceptions.dart';
+import '../models/models.dart';
 
 abstract class MediasDataSource {
   Map<AccountType, Medias> getAccountMedias();
+
+  Media saveMedia(Media media);
 
   bool? hasData(AccountType type);
 }
@@ -48,7 +51,39 @@ class MediasDataSourceImpl implements MediasDataSource {
   }
 
   @override
+  Media saveMedia(Media media) {
+    Uri statusMediaUri = media.uri;
+    String statusMediaFileName = statusMediaUri.pathSegments.last;
+    String toSaveStatusMediaPath = media.type == MediaType.Image
+        ? Constants.SAVE_IMAGE_PATH + statusMediaFileName
+        : Constants.SAVE_VIDEO_PATH + statusMediaFileName;
+
+    Uri toSaveStatusMediaUri = Uri.parse(toSaveStatusMediaPath);
+    File toSaveStatusMediaFile = File.fromUri(toSaveStatusMediaUri);
+
+    if (toSaveStatusMediaFile.existsSync()) {
+      throw FileExistsException();
+    }
+
+    _createFolder(media.type);
+    File statusMediaFile = File.fromUri(statusMediaUri);
+    File savedStatusFile = statusMediaFile.copySync(toSaveStatusMediaPath);
+
+    return media.copyWith(uri: savedStatusFile.uri);
+  }
+
+  @override
   bool? hasData(AccountType type) {
     return _accountHasData[type];
+  }
+
+  void _createFolder(MediaType type) {
+    String folderPath =
+        type == MediaType.Image ? Constants.IMAGE_PATH : Constants.VIDEO_PATH;
+
+    File folder = File.fromUri(Uri.parse(folderPath));
+    if (!folder.existsSync()) {
+      folder.createSync();
+    }
   }
 }
