@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import '../../../core/constants/constants.dart';
@@ -7,7 +8,7 @@ import '../models/models.dart';
 abstract class MediasDataSource {
   Map<AccountType, Medias> getAccountMedias();
 
-  Media saveMedia(Media media);
+  Future<Media> saveMedia(Media media);
 
   bool? hasData(AccountType type);
 }
@@ -51,23 +52,29 @@ class MediasDataSourceImpl implements MediasDataSource {
   }
 
   @override
-  Media saveMedia(Media media) {
+  Future<Media> saveMedia(Media media) async {
     Uri statusMediaUri = media.uri;
     String statusMediaFileName = statusMediaUri.pathSegments.last;
     String toSaveStatusMediaPath = media.type == MediaType.Image
-        ? Constants.SAVE_IMAGE_PATH + statusMediaFileName
-        : Constants.SAVE_VIDEO_PATH + statusMediaFileName;
+        ? Constants.SAVE_IMAGE_PATH
+        : Constants.SAVE_VIDEO_PATH;
 
-    Uri toSaveStatusMediaUri = Uri.parse(toSaveStatusMediaPath);
-    File toSaveStatusMediaFile = File.fromUri(toSaveStatusMediaUri);
+    String toSaveStatusMediaPathWithExtension =
+        toSaveStatusMediaPath + statusMediaFileName;
 
-    if (toSaveStatusMediaFile.existsSync()) {
+    Uri toSaveStatusMediaUri = Uri.parse(toSaveStatusMediaPathWithExtension);
+
+    log(toSaveStatusMediaUri.toString(), name: 'MediasDataSourceImpl');
+
+    Directory toSaveStatusMediaDir = Directory.fromUri(toSaveStatusMediaUri);
+    if (toSaveStatusMediaDir.existsSync()) {
       throw FileExistsException();
     }
 
-    _createFolder(media.type);
+    await _createFolder(media.type, toSaveStatusMediaPath);
     File statusMediaFile = File.fromUri(statusMediaUri);
-    File savedStatusFile = statusMediaFile.copySync(toSaveStatusMediaPath);
+    File savedStatusFile =
+        statusMediaFile.copySync(toSaveStatusMediaPathWithExtension);
 
     return media.copyWith(uri: savedStatusFile.uri);
   }
@@ -77,13 +84,13 @@ class MediasDataSourceImpl implements MediasDataSource {
     return _accountHasData[type];
   }
 
-  void _createFolder(MediaType type) {
-    String folderPath =
-        type == MediaType.Image ? Constants.IMAGE_PATH : Constants.VIDEO_PATH;
+  Future<void> _createFolder(MediaType type, String toSavePath) async {
+    Directory(toSavePath).createSync(recursive: true);
 
-    File folder = File.fromUri(Uri.parse(folderPath));
-    if (!folder.existsSync()) {
-      folder.createSync();
+    Directory folderDirSavePath = Directory.fromUri(Uri.parse(toSavePath));
+
+    if (!folderDirSavePath.existsSync()) {
+      folderDirSavePath.createSync(recursive: true);
     }
   }
 }
