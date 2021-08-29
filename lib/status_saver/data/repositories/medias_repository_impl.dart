@@ -35,13 +35,13 @@ class MediasRepositoryImpl implements MediasRepository {
   }
 
   @override
-  Either<Failure, Media> saveMedia(Uri uri) {
+  Future<Either<Failure, Media>> saveMedia(Uri uri) async {
     try {
       MediaType type = mediaTypeFromString(
         uri.pathSegments.last.split('.').last,
       );
       var media = Media(uri: uri, type: type);
-      var saveMedia = dataSource.saveMedia(media);
+      var saveMedia = await dataSource.saveMedia(media);
 
       return right(saveMedia);
     } on FileExistsException {
