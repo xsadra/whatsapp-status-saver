@@ -7,5 +7,5 @@ abstract class MediasRepository {
   Future<Either<Failure, Map<AccountType, Map<MediaType, Medias>>>>
       getAccountMedias();
 
-  Either<Failure, Media> saveMedia(Uri uri);
+  Future<Either<Failure, Media>> saveMedia(Uri uri);
 }
