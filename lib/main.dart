@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-
-import 'status_saver/presentation/pages/pages.dart' show HomeScreen;
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+dart';
+import 'status_saver/presentation/bloc/medias/bloc.dart';
 
 void main() {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MainApp());
 }
 
