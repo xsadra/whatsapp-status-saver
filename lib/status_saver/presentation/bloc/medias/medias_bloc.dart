@@ -1,11 +1,7 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
-import 'package:whatsapp_status_saver/status_saver/data/models/account_type.dart';
-import 'package:whatsapp_status_saver/status_saver/data/models/media_type.dart';
-import 'package:whatsapp_status_saver/status_saver/data/models/medias.dart';
 
 import '../../../../core/error/failure.dart';
+import '../../../data/models/models.dart';
 import '../../../domain/repositories/medias_repository.dart';
 import 'bloc.dart';
 
@@ -22,7 +18,7 @@ class MediasBloc extends Bloc<MediasEvent, MediasState> {
   ) async* {
     if (event is GetAccountMedias) {
       yield Loading();
-      final failureOrAccountMedias = await _repository.getAccountMedias();
+      final failureOrAccountMedias = _repository.getAccountMedias();
 
       yield failureOrAccountMedias.fold(
         (failure) => Error(message: failure.toMessage),
@@ -47,6 +43,14 @@ class MediasBloc extends Bloc<MediasEvent, MediasState> {
                 mediaType: MediaType.Video),
           );
         },
+      );
+    } else if (event is SaveMedia) {
+      yield Saving();
+      final failureOrMedia = _repository.saveMedia(event.uri);
+
+      yield failureOrMedia.fold(
+        (failure) => Error(message: failure.toMessage),
+        (media) => Saved(media: media),
       );
     } else {
       yield Error(message: 'Unexpected Event');

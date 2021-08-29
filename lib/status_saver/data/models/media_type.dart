@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 enum MediaType {
   Image,
   Video,
+  MotFound,
 }
 
 extension MediaTypeExtension on MediaType {
@@ -18,4 +19,11 @@ extension MediaTypeExtension on MediaType {
         return 'not found';
     }
   }
+
+  bool isOf(MediaType mediaType) {
+    return this == mediaType;
+  }
 }
+
+MediaType mediaTypeFromString(String key) => MediaType.values
+    .firstWhere((v) => key == v.value, orElse: () => MediaType.MotFound);

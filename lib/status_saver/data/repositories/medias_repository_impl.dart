@@ -2,12 +2,11 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 
+import '../../../core/error/exceptions.dart';
 import '../../../core/error/failure.dart';
-import '../../data/models/account_type.dart';
-import '../../data/models/medias.dart';
 import '../../domain/repositories/medias_repository.dart';
 import '../datasources/medias_data_source.dart';
-import '../models/media_type.dart';
+import '../models/models.dart';
 
 typedef AccountMedias = Map<AccountType, Map<MediaType, Medias>>;
 
@@ -17,7 +16,7 @@ class MediasRepositoryImpl implements MediasRepository {
   MediasRepositoryImpl({required this.dataSource});
 
   @override
-  Future<Either<Failure, AccountMedias>> getAccountMedias() {
+  Either<Failure, AccountMedias> getAccountMedias() {
     try {
       Map<AccountType, Medias> accountMedias = dataSource.getAccountMedias();
 
@@ -29,15 +28,30 @@ class MediasRepositoryImpl implements MediasRepository {
         accountMediaSeparated[entry.key] = mediaSeparated;
       }
 
-      return Future.value(right(accountMediaSeparated));
+      return right(accountMediaSeparated);
     } catch (e) {
-      return Future.value(left(ReadWriteException()));
+      return left(ReadWriteFailure());
+    }
+  }
+
+  @override
+  Either<Failure, Media> saveMedia(Uri uri) {
+    try {
+      MediaType type = mediaTypeFromString(
+        uri.pathSegments.last.split('.').last,
+      );
+      Media media = Media(uri: uri, type: type);
+      Media saveMedia = dataSource.saveMedia(media);
+
+      return right(saveMedia);
+    } on FileExistsException {
+      return left(FileExistsFailure());
     }
   }
 
   Map<MediaType, Medias> _extractMediaSeparated(AccountType key, Medias value) {
     Map<MediaType, Medias> mediaSeparated = {};
-    for (var rootUri in value.uris) {
+    for (Uri rootUri in value.uris) {
       Directory systemTempDir = Directory.fromUri(rootUri);
 
       List<FileSystemEntity> listSync = systemTempDir

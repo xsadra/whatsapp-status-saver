@@ -1,3 +1,4 @@
+@Deprecated('Use List<Media> instead')
 class Medias {
   final List<Uri> uris;
 
