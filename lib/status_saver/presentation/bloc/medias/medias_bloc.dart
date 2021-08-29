@@ -50,7 +50,7 @@ class MediasBloc extends Bloc<MediasEvent, MediasState> {
       yield Saving();
       final failureOrMedia = await _repository.saveMedia(event.uri);
 
-      failureOrMedia.fold(
+      yield failureOrMedia.fold(
         (failure) => Error(message: failure.toMessage),
         (media) => Saved(media: media),
       );
