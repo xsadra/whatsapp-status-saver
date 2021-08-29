@@ -1,4 +1,4 @@
-import 'package:whatsapp_status_saver/status_saver/data/models/account_type.dart';
+import 'models.dart';
 
 class Account {
   final AccountType type;

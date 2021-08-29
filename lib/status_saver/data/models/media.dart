@@ -1,4 +1,4 @@
-import 'package:whatsapp_status_saver/status_saver/data/models/models.dart';
+import 'models.dart';
 
 class Media {
   final Uri uri;

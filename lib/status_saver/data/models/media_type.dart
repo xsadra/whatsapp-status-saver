@@ -19,6 +19,10 @@ extension MediaTypeExtension on MediaType {
         return 'not found';
     }
   }
+
+  bool isOf(MediaType mediaType) {
+    return this == mediaType;
+  }
 }
 
 MediaType mediaTypeFromString(String key) => MediaType.values

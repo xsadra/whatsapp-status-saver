@@ -16,7 +16,7 @@ class MediasRepositoryImpl implements MediasRepository {
   MediasRepositoryImpl({required this.dataSource});
 
   @override
-  Future<Either<Failure, AccountMedias>> getAccountMedias() {
+  Either<Failure, AccountMedias> getAccountMedias() {
     try {
       Map<AccountType, Medias> accountMedias = dataSource.getAccountMedias();
 
@@ -28,20 +28,20 @@ class MediasRepositoryImpl implements MediasRepository {
         accountMediaSeparated[entry.key] = mediaSeparated;
       }
 
-      return Future.value(right(accountMediaSeparated));
+      return right(accountMediaSeparated);
     } catch (e) {
-      return Future.value(left(ReadWriteFailure()));
+      return left(ReadWriteFailure());
     }
   }
 
   @override
-  Future<Either<Failure, Media>> saveMedia(Uri uri) async {
+  Either<Failure, Media> saveMedia(Uri uri) {
     try {
       MediaType type = mediaTypeFromString(
         uri.pathSegments.last.split('.').last,
       );
-      var media = Media(uri: uri, type: type);
-      var saveMedia = await dataSource.saveMedia(media);
+      Media media = Media(uri: uri, type: type);
+      Media saveMedia = dataSource.saveMedia(media);
 
       return right(saveMedia);
     } on FileExistsException {
@@ -51,7 +51,7 @@ class MediasRepositoryImpl implements MediasRepository {
 
   Map<MediaType, Medias> _extractMediaSeparated(AccountType key, Medias value) {
     Map<MediaType, Medias> mediaSeparated = {};
-    for (var rootUri in value.uris) {
+    for (Uri rootUri in value.uris) {
       Directory systemTempDir = Directory.fromUri(rootUri);
 
       List<FileSystemEntity> listSync = systemTempDir

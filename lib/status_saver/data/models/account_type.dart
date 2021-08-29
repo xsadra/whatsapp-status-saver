@@ -18,4 +18,8 @@ extension AccountTypeExtension on AccountType {
         return 'not found';
     }
   }
+
+  bool isOf(AccountType accountType) {
+    return this == accountType;
+  }
 }

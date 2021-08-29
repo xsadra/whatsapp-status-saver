@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import '../../../core/constants/constants.dart';
@@ -8,7 +7,7 @@ import '../models/models.dart';
 abstract class MediasDataSource {
   Map<AccountType, Medias> getAccountMedias();
 
-  Future<Media> saveMedia(Media media);
+  Media saveMedia(Media media);
 
   bool? hasData(AccountType type);
 }
@@ -19,7 +18,6 @@ class MediasDataSourceImpl implements MediasDataSource {
   List<Uri> _getStorages() {
     //Todo: get available storages and return their Uris
     return [
-      // Uri.parse('storage/emulated/0'),
       Uri.parse('storage/emulated/0'),
       Uri.parse('storage/emulated/1'),
     ];
@@ -34,7 +32,8 @@ class MediasDataSourceImpl implements MediasDataSource {
         .toList(growable: false);
 
     List<FileSystemEntity> fileSystemEntities = [
-      for (var storage in storages) ...Directory.fromUri(storage).listSync()
+      for (Uri storageUri in storages)
+        ...Directory.fromUri(storageUri).listSync()
     ];
 
     for (AccountType type in AccountType.values) {
@@ -52,10 +51,10 @@ class MediasDataSourceImpl implements MediasDataSource {
   }
 
   @override
-  Future<Media> saveMedia(Media media) async {
+  Media saveMedia(Media media) {
     Uri statusMediaUri = media.uri;
     String statusMediaFileName = statusMediaUri.pathSegments.last;
-    String toSaveStatusMediaPath = media.type == MediaType.Image
+    String toSaveStatusMediaPath = media.type.isOf(MediaType.Image)
         ? Constants.SAVE_IMAGE_PATH
         : Constants.SAVE_VIDEO_PATH;
 
@@ -64,14 +63,12 @@ class MediasDataSourceImpl implements MediasDataSource {
 
     Uri toSaveStatusMediaUri = Uri.parse(toSaveStatusMediaPathWithExtension);
 
-    log(toSaveStatusMediaUri.toString(), name: 'MediasDataSourceImpl');
-
     Directory toSaveStatusMediaDir = Directory.fromUri(toSaveStatusMediaUri);
     if (toSaveStatusMediaDir.existsSync()) {
       throw FileExistsException();
     }
 
-    await _createFolder(media.type, toSaveStatusMediaPath);
+    _createFolder(media.type, toSaveStatusMediaPath);
     File statusMediaFile = File.fromUri(statusMediaUri);
     File savedStatusFile =
         statusMediaFile.copySync(toSaveStatusMediaPathWithExtension);
@@ -84,7 +81,7 @@ class MediasDataSourceImpl implements MediasDataSource {
     return _accountHasData[type];
   }
 
-  Future<void> _createFolder(MediaType type, String toSavePath) async {
+  void _createFolder(MediaType type, String toSavePath) {
     Directory(toSavePath).createSync(recursive: true);
 
     Directory folderDirSavePath = Directory.fromUri(Uri.parse(toSavePath));
