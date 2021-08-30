@@ -76,4 +76,22 @@ class MediasRepositoryImpl implements MediasRepository {
     }
     return mediaSeparated;
   }
+
+  @override
+  Either<Failure, Media> deleteMedia(Uri uri) {
+    // TODO: implement deleteMedia
+    throw UnimplementedError();
+  }
+
+  @override
+  Either<Failure, SavedMedias> getSavedMedias() {
+    try {
+      SavedMedias savedMedias = dataSource.getSavedMedias();
+      return right(savedMedias);
+    } catch (e) {
+      left(ReadWriteFailure());
+    } finally {
+      return left(NotFoundFailure());
+    }
+  }
 }
