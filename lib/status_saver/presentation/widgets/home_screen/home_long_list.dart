@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/constants.dart' show kDefaultPadding;
@@ -34,17 +36,20 @@ class HomeLongList extends StatelessWidget {
           mainAxisSpacing: kDefaultPadding / 2,
           crossAxisSpacing: kDefaultPadding / 2,
         ),
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Container(
-            child: Hero(
-              tag: controller.paths[index],
-              child: CircleAvatar(
-                backgroundImage: AssetImage(controller.paths[index]),
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Container(
+              child: Hero(
+                tag: controller.paths[index],
+                child: CircleAvatar(
+                  backgroundImage:
+                      FileImage(File.fromUri(controller.paths[index])),
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
