@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/constants.dart' show kDefaultPadding;
@@ -31,10 +33,11 @@ class HomeShortList extends StatelessWidget {
                   (index) => Padding(
                     padding: const EdgeInsets.only(right: kDefaultPadding / 2),
                     child: Hero(
-                      tag: controller.paths[index] + "tag",
+                      tag: controller.paths[index].path + "tag",
                       child: CircleAvatar(
                         backgroundColor: Colors.white,
-                        backgroundImage: AssetImage(controller.paths[index]),
+                        backgroundImage:
+                            FileImage(File.fromUri(controller.paths[index])),
                       ),
                     ),
                   ),
