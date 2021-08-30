@@ -1,12 +1,12 @@
 import 'models.dart';
 
 class SavedMedias {
-  final List<Media> medias;
-  final bool isLoaded;
+  final List<Media>? medias;
+  final bool hasItem;
 
   const SavedMedias({
     required this.medias,
-    required this.isLoaded,
+    required this.hasItem,
   });
 
   @override
@@ -15,14 +15,14 @@ class SavedMedias {
       (other is SavedMedias &&
           runtimeType == other.runtimeType &&
           medias == other.medias &&
-          isLoaded == other.isLoaded);
+          hasItem == other.hasItem);
 
   @override
-  int get hashCode => medias.hashCode ^ isLoaded.hashCode;
+  int get hashCode => medias.hashCode ^ hasItem.hashCode;
 
   @override
   String toString() {
-    return 'SavedMedias{' + ' medias: $medias,' + ' isLoaded: $isLoaded,' + '}';
+    return 'SavedMedias{' + ' medias: $medias,' + ' isLoaded: $hasItem,' + '}';
   }
 
   SavedMedias copyWith({
@@ -31,7 +31,7 @@ class SavedMedias {
   }) {
     return SavedMedias(
       medias: medias ?? this.medias,
-      isLoaded: isLoaded ?? this.isLoaded,
+      hasItem: isLoaded ?? this.hasItem,
     );
   }
 }
