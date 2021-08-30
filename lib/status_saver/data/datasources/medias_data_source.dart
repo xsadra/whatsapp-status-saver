@@ -9,6 +9,8 @@ abstract class MediasDataSource {
 
   Media saveMedia(Media media);
 
+  SavedMedias getSavedMedias();
+
   bool? hasData(AccountType type);
 }
 
@@ -89,5 +91,25 @@ class MediasDataSourceImpl implements MediasDataSource {
     if (!folderDirSavePath.existsSync()) {
       folderDirSavePath.createSync(recursive: true);
     }
+  }
+
+  @override
+  SavedMedias getSavedMedias() {
+    List<Uri> storages = Constants.savedMediaUris
+        .where((storage) => Directory.fromUri(storage).existsSync())
+        .toList(growable: false);
+
+    List<FileSystemEntity> savedMediaEntities = [
+      for (Uri uri in storages) ...Directory.fromUri(uri).listSync()
+    ];
+
+    List<Media> savedMedias = savedMediaEntities.map((e) {
+      return Media(
+          uri: e.uri,
+          type: mediaTypeFromString(
+            e.uri.pathSegments.last.split('.').last,
+          ));
+    }).toList();
+    return SavedMedias(medias: savedMedias, hasItem: savedMedias.length > 0);
   }
 }
