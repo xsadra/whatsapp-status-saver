@@ -22,7 +22,7 @@ class SavedMedias {
 
   @override
   String toString() {
-    return 'SavedMedias{' + ' medias: $medias,' + ' isLoaded: $hasItem,' + '}';
+    return 'SavedMedias{' + ' medias: $medias,' + ' hasItem: $hasItem,' + '}';
   }
 
   SavedMedias copyWith({

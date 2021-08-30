@@ -3,7 +3,9 @@ import 'package:meta/meta.dart' show immutable;
 import '../../../data/models/models.dart';
 
 @immutable
-abstract class SavedMediasState {}
+abstract class SavedMediasState {
+  get state => this;
+}
 
 class SavedMediasInitial extends SavedMediasState {}
 

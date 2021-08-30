@@ -7,7 +7,9 @@ import '../../../data/models/models.dart';
 typedef AccountMedias = Map<AccountType, Map<MediaType, Medias>>;
 
 @immutable
-abstract class MediasState {}
+abstract class MediasState {
+  get state => this;
+}
 
 class Empty extends MediasState {}
 
