@@ -4,8 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 dart';
 import 'status_saver/presentation/bloc/medias/bloc.dart';
 
-void main() {
+import 'injection_container.dart' as injection;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await injection.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   runApp(MainApp());
 }
 
