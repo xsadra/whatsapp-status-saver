@@ -1,11 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/constants.dart';
-import '../../../core/constants/mock_data.dart' show MockData;
+import '../../data/models/models.dart';
+import '../bloc/medias/bloc.dart';
+import '../bloc/saved_medias/bloc.dart' as saved;
 import '../controllers/home_controller.dart' show HomeController, HomeState;
-import '../widgets/widgets.dart' show HomeHeader, HomeLongList, HomeShortList;
-import 'detail_screen.dart';
+import '../widgets/widgets.dart'
+    show HomeGridView, HomeHeader, HomeLongList, HomeShortList;
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -22,31 +24,40 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        bottom: false,
-        child: GestureDetector(
-          onVerticalDragUpdate: _onVerticalGesture,
-          child: Container(
-            color: Color(0xffebebeb),
-            // color: Colors.red,
-            child: AnimatedBuilder(
-              animation: controller,
-              builder: (context, _) {
-                return LayoutBuilder(
-                  builder: (context, constraints) {
-                    return Stack(
-                      children: [
-                        buildHomeBody(constraints),
-                        buildShortAndLongList(constraints),
-                        buildCloseLongLIstButton(constraints),
-                        buildHeaderSection(),
-                      ],
-                    );
-                  },
-                );
-              },
+    return BlocListener<saved.SavedMediasBloc, saved.SavedMediasState>(
+      listener: (context, state) {
+        if (state is saved.Loaded) {
+          SavedMedias savedMedias = state.savedMedias;
+          if (savedMedias.hasItem) {
+            controller.initPaths(savedMedias.getUris);
+          }
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          bottom: false,
+          child: GestureDetector(
+            onVerticalDragUpdate: _onVerticalGesture,
+            child: Container(
+              color: Color(0xffebebeb),
+              child: AnimatedBuilder(
+                animation: controller,
+                builder: (context, _) {
+                  return LayoutBuilder(
+                    builder: (context, constraints) {
+                      return Stack(
+                        children: [
+                          buildHomeBody(constraints),
+                          buildShortAndLongList(constraints),
+                          buildCloseLongLIstButton(constraints),
+                          buildHeaderSection(),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ),
         ),
