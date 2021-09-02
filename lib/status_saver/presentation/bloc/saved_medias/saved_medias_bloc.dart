@@ -1,7 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/error/failure.dart';
-import '../../../domain/repositories/medias_repository.dart';
+import '../../../domain/repositories/medias_repository.dart'
+    show MediasRepository;
 import 'bloc.dart';
 
 class SavedMediasBloc extends Bloc<SavedMediasEvent, SavedMediasState> {
@@ -19,13 +20,15 @@ class SavedMediasBloc extends Bloc<SavedMediasEvent, SavedMediasState> {
       yield Loading();
       final failureOrSavedMedias = _repository.getSavedMedias();
 
-      yield failureOrSavedMedias
-          .fold((failure) => Error(message: failure.toMessage), (savedMedias) {
-        if (savedMedias.hasItem) {
-          return Loaded(savedMedias: savedMedias);
-        }
-        return NoItem();
-      });
+      yield failureOrSavedMedias.fold(
+        (failure) => Error(message: failure.toMessage),
+        (savedMedias) {
+          if (savedMedias.hasItem) {
+            return Loaded(savedMedias: savedMedias);
+          }
+          return NoItem();
+        },
+      );
     }
   }
 }
