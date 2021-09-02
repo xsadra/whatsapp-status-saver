@@ -9,6 +9,8 @@ class SavedMedias {
     required this.hasItem,
   });
 
+  List<Uri> get getUris => medias?.map((e) => e.uri).toList() ?? [];
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
