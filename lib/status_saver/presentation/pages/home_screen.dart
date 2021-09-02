@@ -1,11 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/constants.dart';
-import '../../../core/constants/mock_data.dart' show MockData;
+import '../../data/models/models.dart';
+import '../bloc/medias/bloc.dart';
+import '../bloc/saved_medias/bloc.dart' as saved;
 import '../controllers/home_controller.dart' show HomeController, HomeState;
-import '../widgets/widgets.dart' show HomeHeader, HomeLongList, HomeShortList;
-import 'detail_screen.dart';
+import '../widgets/widgets.dart'
+    show HomeGridView, HomeHeader, HomeLongList, HomeShortList;
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -22,31 +24,40 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        bottom: false,
-        child: GestureDetector(
-          onVerticalDragUpdate: _onVerticalGesture,
-          child: Container(
-            color: Color(0xffebebeb),
-            // color: Colors.red,
-            child: AnimatedBuilder(
-              animation: controller,
-              builder: (context, _) {
-                return LayoutBuilder(
-                  builder: (context, constraints) {
-                    return Stack(
-                      children: [
-                        buildHomeBody(constraints),
-                        buildShortAndLongList(constraints),
-                        buildCloseLongLIstButton(constraints),
-                        buildHeaderSection(),
-                      ],
-                    );
-                  },
-                );
-              },
+    return BlocListener<saved.SavedMediasBloc, saved.SavedMediasState>(
+      listener: (context, state) {
+        if (state is saved.Loaded) {
+          SavedMedias savedMedias = state.savedMedias;
+          if (savedMedias.hasItem) {
+            controller.initPaths(savedMedias.getUris);
+          }
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          bottom: false,
+          child: GestureDetector(
+            onVerticalDragUpdate: _onVerticalGesture,
+            child: Container(
+              color: Color(0xffebebeb),
+              child: AnimatedBuilder(
+                animation: controller,
+                builder: (context, _) {
+                  return LayoutBuilder(
+                    builder: (context, constraints) {
+                      return Stack(
+                        children: [
+                          buildHomeBody(constraints),
+                          buildShortAndLongList(constraints),
+                          buildCloseLongLIstButton(constraints),
+                          buildHeaderSection(),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -72,53 +83,30 @@ class HomeScreen extends StatelessWidget {
             bottomRight: Radius.circular(kDefaultPadding * 1.5),
           ),
         ),
-        child: GridView.builder(
-          // scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: MockData.mockPicsPaths.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 1,
-            mainAxisSpacing: kDefaultPadding / 2,
-            crossAxisSpacing: kDefaultPadding / 2,
-          ),
-          itemBuilder: (context, index) => Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      fullscreenDialog: true,
-                      // barrierColor: Colors.transparent,
-                      transitionDuration: kPanelTransition,
-                      reverseTransitionDuration: kPanelTransition,
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          FadeTransition(
-                        opacity: animation,
-                        child: DetailsScreen(
-                          height: constraints.maxHeight * 0.90,
-                          onSave: () {
-                            controller.addToSaveList(
-                              MockData.mockPicsPaths[index],
-                            );
-                          },
-                          path: MockData.mockPicsPaths[index],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                child: Hero(
-                  tag: MockData.mockPicsPaths[index],
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage(MockData.mockPicsPaths[index]),
-                  ),
-                ),
-              ),
-            ),
-          ),
+        child: BlocBuilder<MediasBloc, MediasState>(
+          buildWhen: (previous, current) =>
+              previous != current &&
+              current.state is! Saved &&
+              current.state is! Saving,
+          builder: (context, state) {
+            if (state is Loaded) {
+              final List<Uri> whatsAppImages = state.images;
+
+              return HomeGridView(
+                  images: whatsAppImages,
+                  controller: controller,
+                  constraints: constraints);
+            } else if (state is Loading || state is Empty) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is Error) {
+              print(state.message);
+            }
+            return Center(
+              child: Text('Unhandled state'),
+            );
+          },
         ),
       ),
     );

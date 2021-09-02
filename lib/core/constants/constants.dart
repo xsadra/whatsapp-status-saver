@@ -26,4 +26,8 @@ class Constants {
       'storage/emulated/0/Movies/Status Saver/';
   static const String IMAGE_PATH = 'storage/emulated/0/Pictures/';
   static const String VIDEO_PATH = 'storage/emulated/0/Movies/';
+  static List<Uri> savedMediaUris = [
+    Uri.parse('storage/emulated/0/Pictures/Status Saver/'),
+    Uri.parse('storage/emulated/0/Movies/Status Saver/'),
+  ];
 }

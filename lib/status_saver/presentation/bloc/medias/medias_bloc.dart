@@ -19,28 +19,25 @@ class MediasBloc extends Bloc<MediasEvent, MediasState> {
     if (event is GetAccountMedias) {
       yield Loading();
       final failureOrAccountMedias = _repository.getAccountMedias();
+      final accountType = event.setAccountToShow;
 
       yield failureOrAccountMedias.fold(
         (failure) => Error(message: failure.toMessage),
         (accountMedias) {
+          var accounts = accountMedias.keys.toList();
+          accounts.sort((a, b) => a.index - b.index);
+
           return Loaded(
-            accountMedias: accountMedias,
-            whatsAppBusinessVideos: _getExpandedUris(
+            images: _getExpandedUris(
                 accountMedias: accountMedias,
-                accountType: AccountType.WhatsAppBusiness,
-                mediaType: MediaType.Video),
-            whatsAppBusinessImages: _getExpandedUris(
-                accountMedias: accountMedias,
-                accountType: AccountType.WhatsAppBusiness,
+                accountType: accountType,
                 mediaType: MediaType.Image),
-            whatsAppImages: _getExpandedUris(
+            videos: _getExpandedUris(
                 accountMedias: accountMedias,
-                accountType: AccountType.WhatsApp,
-                mediaType: MediaType.Image),
-            whatsAppVideos: _getExpandedUris(
-                accountMedias: accountMedias,
-                accountType: AccountType.WhatsApp,
+                accountType: accountType,
                 mediaType: MediaType.Video),
+            accountToShow: accountType,
+            accounts: accounts,
           );
         },
       );
@@ -57,10 +54,11 @@ class MediasBloc extends Bloc<MediasEvent, MediasState> {
     }
   }
 
-  List<Uri> _getExpandedUris(
-      {required Map<AccountType, Map<MediaType, Medias>> accountMedias,
-      required AccountType accountType,
-      required MediaType mediaType}) {
+  List<Uri> _getExpandedUris({
+    required Map<AccountType, Map<MediaType, Medias>> accountMedias,
+    required AccountType accountType,
+    required MediaType mediaType,
+  }) {
     return accountMedias[accountType]
             ?.entries
             .where((element) => element.key == mediaType)

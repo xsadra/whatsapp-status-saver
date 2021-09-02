@@ -1,13 +1,12 @@
 import 'package:meta/meta.dart' show immutable;
 
-import '../../../data/models/account_type.dart';
-import '../../../data/models/media_type.dart';
-import '../../../data/models/models.dart';
-
-typedef AccountMedias = Map<AccountType, Map<MediaType, Medias>>;
+import '../../../data/models/account_type.dart' show AccountType;
+import '../../../data/models/models.dart' show AccountType, Media;
 
 @immutable
-abstract class MediasState {}
+abstract class MediasState {
+  get state => this;
+}
 
 class Empty extends MediasState {}
 
@@ -22,18 +21,16 @@ class Saved extends MediasState {
 }
 
 class Loaded extends MediasState {
-  final AccountMedias accountMedias;
-  final List<Uri> whatsAppVideos;
-  final List<Uri> whatsAppImages;
-  final List<Uri> whatsAppBusinessVideos;
-  final List<Uri> whatsAppBusinessImages;
+  final List<Uri> videos;
+  final List<Uri> images;
+  final AccountType accountToShow;
+  final List<AccountType> accounts;
 
   Loaded({
-    required this.whatsAppVideos,
-    required this.whatsAppImages,
-    required this.whatsAppBusinessVideos,
-    required this.whatsAppBusinessImages,
-    required this.accountMedias,
+    required this.videos,
+    required this.images,
+    required this.accountToShow,
+    required this.accounts,
   });
 }
 

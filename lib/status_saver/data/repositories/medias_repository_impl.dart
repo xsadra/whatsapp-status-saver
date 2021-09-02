@@ -70,10 +70,27 @@ class MediasRepositoryImpl implements MediasRepository {
           media.uris.add(uri);
           mediaSeparated[MediaType.Video] = media;
         } else {
-          print('not supported Uri in:' + key.value + ' -> ' + uri.toString());
+          print(
+              '-- not supported Uri in:' + key.value + ' -> ' + uri.toString());
         }
       }
     }
     return mediaSeparated;
+  }
+
+  @override
+  Either<Failure, Media> deleteMedia(Uri uri) {
+    // TODO: implement deleteMedia
+    throw UnimplementedError();
+  }
+
+  @override
+  Either<Failure, SavedMedias> getSavedMedias() {
+    try {
+      SavedMedias savedMedias = dataSource.getSavedMedias();
+      return right(savedMedias);
+    } catch (e) {
+      return left(ReadWriteFailure());
+    }
   }
 }

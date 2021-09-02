@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/constants.dart' show kDefaultPadding;
 import '../../controllers/home_controller.dart' show HomeController;
+import '../widgets.dart';
 
 class HomeShortList extends StatelessWidget {
   const HomeShortList({
@@ -13,37 +14,36 @@ class HomeShortList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Row(
-        children: [
-          Text(
-            "Saved",
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          const SizedBox(width: kDefaultPadding),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: List.generate(
-                  controller.paths.length,
-                  (index) => Padding(
-                    padding: const EdgeInsets.only(right: kDefaultPadding / 2),
-                    child: Hero(
-                      tag: controller.paths[index] + "tag",
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        backgroundImage: AssetImage(controller.paths[index]),
-                      ),
-                    ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 15.0, right: 00.0),
+          child: Row(
+            children: [
+              Icon(
+                Icons.save,
+                size: 48,
+                color: Colors.black54,
+              ),
+              const SizedBox(width: kDefaultPadding / 2),
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.all(14),
+                  child: Row(
+                    children: List.generate(controller.paths.length, (index) {
+                      var uri = controller.paths[index];
+                      var tag = uri.path + "tag";
+                      return ShortListItem(uri: uri, tag: tag);
+                    }),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

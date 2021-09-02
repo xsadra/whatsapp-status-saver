@@ -7,4 +7,8 @@ abstract class MediasRepository {
   Either<Failure, Map<AccountType, Map<MediaType, Medias>>> getAccountMedias();
 
   Either<Failure, Media> saveMedia(Uri uri);
+
+  Either<Failure, Media> deleteMedia(Uri uri);
+
+  Either<Failure, SavedMedias> getSavedMedias();
 }
