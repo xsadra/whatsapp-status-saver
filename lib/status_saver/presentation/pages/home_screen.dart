@@ -83,53 +83,30 @@ class HomeScreen extends StatelessWidget {
             bottomRight: Radius.circular(kDefaultPadding * 1.5),
           ),
         ),
-        child: GridView.builder(
-          // scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: MockData.mockPicsPaths.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 1,
-            mainAxisSpacing: kDefaultPadding / 2,
-            crossAxisSpacing: kDefaultPadding / 2,
-          ),
-          itemBuilder: (context, index) => Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      fullscreenDialog: true,
-                      // barrierColor: Colors.transparent,
-                      transitionDuration: kPanelTransition,
-                      reverseTransitionDuration: kPanelTransition,
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          FadeTransition(
-                        opacity: animation,
-                        child: DetailsScreen(
-                          height: constraints.maxHeight * 0.90,
-                          onSave: () {
-                            controller.addToSaveList(
-                              MockData.mockPicsPaths[index],
-                            );
-                          },
-                          path: MockData.mockPicsPaths[index],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                child: Hero(
-                  tag: MockData.mockPicsPaths[index],
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage(MockData.mockPicsPaths[index]),
-                  ),
-                ),
-              ),
-            ),
-          ),
+        child: BlocBuilder<MediasBloc, MediasState>(
+          buildWhen: (previous, current) =>
+              previous != current &&
+              current.state is! Saved &&
+              current.state is! Saving,
+          builder: (context, state) {
+            if (state is Loaded) {
+              final List<Uri> whatsAppImages = state.images;
+
+              return HomeGridView(
+                  images: whatsAppImages,
+                  controller: controller,
+                  constraints: constraints);
+            } else if (state is Loading || state is Empty) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is Error) {
+              print(state.message);
+            }
+            return Center(
+              child: Text('Unhandled state'),
+            );
+          },
         ),
       ),
     );
