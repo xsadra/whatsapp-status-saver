@@ -91,9 +91,14 @@ class HomeScreen extends StatelessWidget {
           builder: (context, state) {
             if (state is Loaded) {
               final List<Uri> whatsAppImages = state.images;
+              final List<Uri> whatsAppVideos = state.videos;
+              final List<Uri> whatsAppMedias = <Uri>[
+                ...whatsAppImages,
+                ...whatsAppVideos
+              ];
 
               return HomeGridView(
-                  images: whatsAppImages,
+                  medias: whatsAppMedias,
                   controller: controller,
                   constraints: constraints);
             } else if (state is Loading || state is Empty) {
