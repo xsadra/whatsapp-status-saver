@@ -1,4 +1,5 @@
 export 'home_screen/circular_avatar.dart';
+export 'home_screen/circular_item.dart';
 export 'home_screen/home_grid_view.dart';
 export 'home_screen/home_grid_view_item.dart';
 export 'home_screen/home_header.dart';
