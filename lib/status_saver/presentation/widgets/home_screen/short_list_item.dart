@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/constants.dart' show kDefaultPadding;
+import '../../../data/models/models.dart';
+import '../widgets.dart' show CircularItem, VideoItem;
 
 class ShortListItem extends StatelessWidget {
   const ShortListItem({
@@ -16,36 +18,27 @@ class ShortListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isImage = mediaTypeFromString(uri.pathSegments.last.split('.')[1])
+        .isOf(MediaType.Image);
     return Padding(
       padding: const EdgeInsets.only(right: kDefaultPadding / 2),
-      child: Container(
-        padding: const EdgeInsets.all(2.0),
-        decoration: const BoxDecoration(
-          color: const Color(0xFF4CAF50),
-          borderRadius: const BorderRadius.all(Radius.circular(32)),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black38,
-                blurRadius: 10,
-                spreadRadius: 1,
-                offset: Offset(-5, 5)),
-          ],
-        ),
-        child: Container(
-          padding: const EdgeInsets.all(1.0),
-          decoration: const BoxDecoration(
-            color: const Color(0xFFFFFFFF),
-            borderRadius: const BorderRadius.all(Radius.circular(32)),
-          ),
-          child: Hero(
-            tag: tag,
-            child: CircleAvatar(
-              radius: 30,
-              backgroundColor: const Color(0xFFFFFFFF),
-              backgroundImage: FileImage(File.fromUri(uri)),
-            ),
-          ),
-        ),
+      child: Hero(
+        tag: tag,
+        child: isImage
+            ? CircularItem(
+                radius: 50,
+                child:
+                    CircleAvatar(backgroundImage: FileImage(File.fromUri(uri))),
+              )
+            : SizedBox(
+                height: 50,
+                width: 50,
+                child: VideoItem(
+                  uri: uri,
+                  radius: 25,
+                  iconSize: 20,
+                ),
+              ),
       ),
     );
   }
