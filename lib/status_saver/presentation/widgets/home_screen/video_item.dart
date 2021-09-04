@@ -6,9 +6,16 @@ import 'package:video_player/video_player.dart';
 import '../widgets.dart' show CircularItem;
 
 class VideoItem extends StatefulWidget {
-  const VideoItem({Key? key, required this.uri}) : super(key: key);
+  const VideoItem({
+    Key? key,
+    required this.uri,
+    this.radius = 50.0,
+    this.iconSize = 45.0,
+  }) : super(key: key);
 
   final Uri uri;
+  final double? radius;
+  final double? iconSize;
 
   @override
   _VideoItemState createState() => _VideoItemState();
@@ -39,26 +46,26 @@ class _VideoItemState extends State<VideoItem> {
 
   Widget buildPlaybackIcon() {
     return Container(
-      height: 45,
-      width: 45,
-      decoration: const BoxDecoration(
+      height: widget.iconSize,
+      width: widget.iconSize,
+      decoration: BoxDecoration(
         color: const Color(0x99FFFFFF),
-        borderRadius: const BorderRadius.all(Radius.circular(40)),
+        borderRadius: BorderRadius.all(Radius.circular(widget.iconSize! - 5)),
       ),
       child: Icon(
         Icons.play_circle_outline,
         color: Colors.blue,
-        size: 40,
+        size: widget.iconSize! - 5,
       ),
     );
   }
 
   Widget buildCircularIVideo() {
     return CircularItem(
-      radius: 50,
+      radius: widget.radius!,
       child: _controller.value.isInitialized
           ? ClipRRect(
-              borderRadius: BorderRadius.circular(50),
+              borderRadius: BorderRadius.circular(widget.radius!),
               child: VideoPlayer(_controller))
           : Padding(
               padding: const EdgeInsets.all(32.0),
