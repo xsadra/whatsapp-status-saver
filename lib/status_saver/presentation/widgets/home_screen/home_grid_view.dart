@@ -7,20 +7,21 @@ import '../../widgets/widgets.dart' show HomeGridViewItem;
 class HomeGridView extends StatelessWidget {
   const HomeGridView({
     Key? key,
-    required this.images,
+    required this.medias,
     required this.controller,
     required this.constraints,
   }) : super(key: key);
 
-  final List<Uri> images;
+  final List<Uri> medias;
   final HomeController controller;
   final BoxConstraints constraints;
 
   @override
   Widget build(BuildContext context) {
+    medias.shuffle();
     return GridView.builder(
       shrinkWrap: true,
-      itemCount: images.length,
+      itemCount: medias.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         childAspectRatio: 1,
@@ -31,7 +32,7 @@ class HomeGridView extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: HomeGridViewItem(
             controller: controller,
-            uri: images[index],
+            uri: medias[index],
             constraints: constraints),
       ),
     );

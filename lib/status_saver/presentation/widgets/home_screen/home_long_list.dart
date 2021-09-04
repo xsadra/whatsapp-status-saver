@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/constants.dart' show kDefaultPadding;
 import '../../controllers/home_controller.dart' show HomeController;
+import '../widgets.dart' show ShowMediaItem;
 
 class HomeLongList extends StatelessWidget {
   HomeLongList({
@@ -42,10 +41,7 @@ class HomeLongList extends StatelessWidget {
             child: Container(
               child: Hero(
                 tag: controller.paths[index],
-                child: CircleAvatar(
-                  backgroundImage:
-                      FileImage(File.fromUri(controller.paths[index])),
-                ),
+                child: ShowMediaItem(uri: controller.paths[index]),
               ),
             ),
           );

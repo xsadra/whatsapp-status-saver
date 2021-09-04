@@ -1,12 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/constants/constants.dart';
-import '../../bloc/medias/bloc.dart';
+import '../../../../core/constants/constants.dart' show kPanelTransition;
+import '../../bloc/medias/bloc.dart' show MediasBloc, SaveMedia;
 import '../../controllers/home_controller.dart' show HomeController;
 import '../../pages/pages.dart' show DetailsScreen;
+import '../widgets.dart' show ShowMediaItem;
 
 class HomeGridViewItem extends StatelessWidget {
   const HomeGridViewItem({
@@ -29,9 +28,7 @@ class HomeGridViewItem extends StatelessWidget {
         },
         child: Hero(
           tag: uri,
-          child: CircleAvatar(
-            backgroundImage: FileImage(File.fromUri(uri)),
-          ),
+          child: ShowMediaItem(uri: uri),
         ),
       ),
     );
@@ -48,12 +45,12 @@ class HomeGridViewItem extends StatelessWidget {
           return FadeTransition(
             opacity: animation,
             child: DetailsScreen(
+              uri: uri,
               height: constraints.maxHeight * 0.90,
               onSave: () {
                 controller.addToSaveList(uri);
                 buildContext.read<MediasBloc>().add(SaveMedia(uri: uri));
               },
-              uri: uri,
             ),
           );
         },
