@@ -107,6 +107,9 @@ class HomeScreen extends StatelessWidget {
               );
             } else if (state is Error) {
               print(state.message);
+              return Center(
+                child: Text(state.message),
+              );
             }
             return Center(
               child: Text('Unhandled state'),
