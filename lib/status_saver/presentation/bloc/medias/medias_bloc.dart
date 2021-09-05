@@ -28,14 +28,14 @@ class MediasBloc extends Bloc<MediasEvent, MediasState> {
           accounts.sort((a, b) => a.index - b.index);
 
           return Loaded(
-            images: _getExpandedUris(
-                accountMedias: accountMedias,
-                accountType: accountType,
-                mediaType: MediaType.Image),
-            videos: _getExpandedUris(
-                accountMedias: accountMedias,
-                accountType: accountType,
-                mediaType: MediaType.Video),
+            images: _getUrisByType(
+              medias: accountMedias[accountType]!,
+              type: MediaType.Image,
+            ),
+            videos: _getUrisByType(
+              medias: accountMedias[accountType]!,
+              type: MediaType.Video,
+            ),
             accountToShow: accountType,
             accounts: accounts,
           );
@@ -54,18 +54,12 @@ class MediasBloc extends Bloc<MediasEvent, MediasState> {
     }
   }
 
-  List<Uri> _getExpandedUris({
-    required Map<AccountType, Map<MediaType, Medias>> accountMedias,
-    required AccountType accountType,
-    required MediaType mediaType,
-  }) {
-    return accountMedias[accountType]
-            ?.entries
-            .where((element) => element.key == mediaType)
-            .map((e) => e.value)
-            .toList()
-            .expand((element) => element.uris)
-            .toList() ??
-        [];
-  }
+  List<Uri> _getUrisByType({
+    required List<Media> medias,
+    required MediaType type,
+  }) =>
+      medias
+          .where((media) => media.type == type)
+          .map((media) => media.uri)
+          .toList();
 }

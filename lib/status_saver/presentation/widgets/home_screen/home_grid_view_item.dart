@@ -27,7 +27,7 @@ class HomeGridViewItem extends StatelessWidget {
           navigateToDetailsScreen(context);
         },
         child: Hero(
-          tag: uri,
+          tag: uri.path,
           child: ShowMediaItem(uri: uri),
         ),
       ),

@@ -40,7 +40,7 @@ class HomeLongList extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Container(
               child: Hero(
-                tag: controller.paths[index],
+                tag: controller.paths[index].path,
                 child: ShowMediaItem(uri: controller.paths[index]),
               ),
             ),

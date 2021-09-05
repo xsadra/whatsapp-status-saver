@@ -8,7 +8,7 @@ import '../../domain/repositories/medias_repository.dart';
 import '../datasources/medias_data_source.dart';
 import '../models/models.dart';
 
-typedef AccountMedias = Map<AccountType, Map<MediaType, Medias>>;
+typedef AccountMedias = Map<AccountType, List<Media>>;
 
 class MediasRepositoryImpl implements MediasRepository {
   final MediasDataSource dataSource;
@@ -18,13 +18,12 @@ class MediasRepositoryImpl implements MediasRepository {
   @override
   Either<Failure, AccountMedias> getAccountMedias() {
     try {
-      Map<AccountType, Medias> accountMedias = dataSource.getAccountMedias();
-
+      Map<AccountType, List<Media>> accountMedias =
+          dataSource.getAccountMedias();
       AccountMedias accountMediaSeparated = {};
 
       for (var entry in accountMedias.entries) {
-        Map<MediaType, Medias> mediaSeparated =
-            _extractMediaSeparated(entry.key, entry.value);
+        List<Media> mediaSeparated = _extractMediaSeparated(entry.value);
         accountMediaSeparated[entry.key] = mediaSeparated;
       }
 
@@ -49,33 +48,31 @@ class MediasRepositoryImpl implements MediasRepository {
     }
   }
 
-  Map<MediaType, Medias> _extractMediaSeparated(AccountType key, Medias value) {
-    Map<MediaType, Medias> mediaSeparated = {};
-    for (Uri rootUri in value.uris) {
-      Directory systemTempDir = Directory.fromUri(rootUri);
+  List<Media> _extractMediaSeparated(List<Media> value) {
+    List<Media> medias = [];
+    for (Media rootUri in value) {
+      List<FileSystemEntity> allStatusFileSystems =
+          Directory.fromUri(rootUri.uri)
+              .listSync(recursive: true, followLinks: true)
+              .where((event) => event.path.contains('Media/.Statuses/'))
+              .toList();
 
-      List<FileSystemEntity> listSync = systemTempDir
-          .listSync(recursive: true, followLinks: true)
-          .where((event) => event.path.contains('Media/.Statuses/'))
-          .toList();
+      for (FileSystemEntity fileSystem in allStatusFileSystems) {
+        Uri uri = fileSystem.uri;
+        MediaType type = mediaTypeFromString(
+          uri.pathSegments.last.split('.')[1],
+        );
 
-      for (FileSystemEntity entity in listSync) {
-        Uri uri = entity.uri;
-        if (uri.path.endsWith(MediaType.Image.value)) {
-          Medias media = mediaSeparated[MediaType.Image] ?? Medias(uris: []);
-          media.uris.add(uri);
-          mediaSeparated[MediaType.Image] = media;
-        } else if (uri.path.endsWith(MediaType.Video.value)) {
-          Medias media = mediaSeparated[MediaType.Video] ?? Medias(uris: []);
-          media.uris.add(uri);
-          mediaSeparated[MediaType.Video] = media;
+        if (type.isValid()) {
+          medias.add(
+            Media(uri: uri, type: type),
+          );
         } else {
-          print(
-              '-- not supported Uri in:' + key.value + ' -> ' + uri.toString());
+          print('-- not supported Uri at: ' + uri.toString());
         }
       }
     }
-    return mediaSeparated;
+    return medias;
   }
 
   @override
@@ -88,6 +85,7 @@ class MediasRepositoryImpl implements MediasRepository {
   Either<Failure, SavedMedias> getSavedMedias() {
     try {
       SavedMedias savedMedias = dataSource.getSavedMedias();
+
       return right(savedMedias);
     } catch (e) {
       return left(ReadWriteFailure());

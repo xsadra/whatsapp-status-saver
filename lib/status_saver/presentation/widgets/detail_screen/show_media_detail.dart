@@ -15,13 +15,9 @@ class ShowMediaDetail extends StatelessWidget {
   final double height;
 
   @override
-  Widget build(BuildContext context) {
-    var isImage = mediaTypeFromString(
-      uri.pathSegments.last.split('.')[1],
-    ).isOf(MediaType.Image);
-
-    return isImage
-        ? ImageViewerWidget(path: uri.path, height: height)
-        : VideoPlayerWidget(path: uri.path, height: height);
-  }
+  Widget build(BuildContext context) =>
+      mediaTypeFromString(uri.pathSegments.last.split('.')[1])
+              .isOf(MediaType.Image)
+          ? ImageViewerWidget(uri: uri, height: height)
+          : VideoPlayerWidget(path: uri.path, height: height);
 }

@@ -18,7 +18,7 @@ class HomeGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    medias.shuffle();
+    //  medias.shuffle();
     return GridView.builder(
       shrinkWrap: true,
       itemCount: medias.length,

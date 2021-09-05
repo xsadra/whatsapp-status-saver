@@ -5,7 +5,7 @@ import '../../../core/error/exceptions.dart';
 import '../models/models.dart';
 
 abstract class MediasDataSource {
-  Map<AccountType, Medias> getAccountMedias();
+  Map<AccountType, List<Media>> getAccountMedias();
 
   Media saveMedia(Media media);
 
@@ -26,8 +26,8 @@ class MediasDataSourceImpl implements MediasDataSource {
   }
 
   @override
-  Map<AccountType, Medias> getAccountMedias() {
-    Map<AccountType, Medias> accountMedias = {};
+  Map<AccountType, List<Media>> getAccountMedias() {
+    Map<AccountType, List<Media>> accountMedias = {};
 
     List<Uri> storages = _getStorages()
         .where((storage) => Directory.fromUri(storage).existsSync())
@@ -41,8 +41,13 @@ class MediasDataSourceImpl implements MediasDataSource {
     for (AccountType type in AccountType.values) {
       for (FileSystemEntity entity in fileSystemEntities) {
         if (entity.path.endsWith(type.value)) {
-          Medias accountMedia = accountMedias[type] ?? Medias(uris: []);
-          accountMedia.uris.add(entity.uri);
+          List<Media> accountMedia = accountMedias[type] ?? [];
+          accountMedia.add(
+            Media(
+              uri: entity.uri,
+              type: MediaType.MotFound,
+            ),
+          );
           accountMedias[type] = accountMedia;
           _accountHasData[type] = true;
         }
