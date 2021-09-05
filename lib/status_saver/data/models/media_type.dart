@@ -20,9 +20,9 @@ extension MediaTypeExtension on MediaType {
     }
   }
 
-  bool isOf(MediaType mediaType) {
-    return this == mediaType;
-  }
+  bool isOf(MediaType mediaType) => this == mediaType;
+
+  bool isValid() => this == MediaType.Image || this == MediaType.Video;
 }
 
 MediaType mediaTypeFromString(String key) => MediaType.values
