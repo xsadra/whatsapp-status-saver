@@ -23,10 +23,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFEEEEEE),
-      body: buildBody(),
-      bottomNavigationBar: buildBottomNavigationBar(context),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Color(0xFFEEEEEE),
+        body: buildBody(),
+        bottomNavigationBar: buildBottomNavigationBar(context),
+      ),
     );
   }
 
