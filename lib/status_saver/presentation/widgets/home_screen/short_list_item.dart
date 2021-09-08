@@ -22,24 +22,24 @@ class ShortListItem extends StatelessWidget {
         .isOf(MediaType.Image);
     return Padding(
       padding: const EdgeInsets.only(right: kDefaultPadding / 2),
-      child: Hero(
-        tag: tag,
-        child: isImage
-            ? CircularItem(
-                radius: 50,
-                child:
-                    CircleAvatar(backgroundImage: FileImage(File.fromUri(uri))),
-              )
-            : SizedBox(
-                height: 50,
-                width: 50,
-                child: VideoItem(
-                  uri: uri,
-                  radius: 25,
-                  iconSize: 20,
-                ),
+      child: isImage
+          ? CircularItem(
+              radius: 50,
+              child: Hero(
+                  tag: tag,
+                  child: CircleAvatar(
+                      backgroundImage: FileImage(File.fromUri(uri)))),
+            )
+          : SizedBox(
+              height: 50,
+              width: 50,
+              child: VideoItem(
+                uri: uri,
+                tag: tag,
+                radius: 25,
+                iconSize: 20,
               ),
-      ),
+            ),
     );
   }
 }

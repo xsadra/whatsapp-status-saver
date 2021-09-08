@@ -9,11 +9,13 @@ class VideoItem extends StatefulWidget {
   const VideoItem({
     Key? key,
     required this.uri,
+    this.tag,
     this.radius = 50.0,
     this.iconSize = 45.0,
   }) : super(key: key);
 
   final Uri uri;
+  final String? tag;
   final double? radius;
   final double? iconSize;
 
@@ -66,7 +68,11 @@ class _VideoItemState extends State<VideoItem> {
       child: _controller.value.isInitialized
           ? ClipRRect(
               borderRadius: BorderRadius.circular(widget.radius!),
-              child: VideoPlayer(_controller))
+              child: Hero(
+                tag: widget.tag ?? widget.uri.path,
+                child: VideoPlayer(_controller),
+              ),
+            )
           : Padding(
               padding: const EdgeInsets.all(32.0),
               child: const CircularProgressIndicator(),

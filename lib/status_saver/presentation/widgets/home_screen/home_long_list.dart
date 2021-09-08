@@ -39,10 +39,7 @@ class HomeLongList extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(10.0),
             child: Container(
-              child: Hero(
-                tag: controller.paths[index].path,
-                child: ShowMediaItem(uri: controller.paths[index]),
-              ),
+              child: ShowMediaItem(uri: controller.paths[index]),
             ),
           );
         },
