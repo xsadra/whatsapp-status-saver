@@ -14,6 +14,7 @@ class HomeLongList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var length = controller.paths.length;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: kDefaultPadding / 2),
       decoration: BoxDecoration(
@@ -28,7 +29,7 @@ class HomeLongList extends StatelessWidget {
       child: GridView.builder(
         // scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        itemCount: controller.paths.length,
+        itemCount: length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           childAspectRatio: 1,
@@ -39,7 +40,7 @@ class HomeLongList extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(10.0),
             child: Container(
-              child: ShowMediaItem(uri: controller.paths[index]),
+              child: ShowMediaItem(uri: controller.paths[length - index - 1]),
             ),
           );
         },

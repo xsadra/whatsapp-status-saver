@@ -43,7 +43,7 @@ class HomeGridViewItem extends StatelessWidget {
             opacity: animation,
             child: DetailsScreen(
               uri: uri,
-              height: constraints.maxHeight * 0.85,
+              height: constraints.maxHeight,
               onSave: () {
                 controller.addToSaveList(uri);
                 buildContext.read<MediasBloc>().add(SaveMedia(uri: uri));
