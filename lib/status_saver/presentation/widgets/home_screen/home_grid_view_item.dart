@@ -26,10 +26,7 @@ class HomeGridViewItem extends StatelessWidget {
         onTap: () {
           navigateToDetailsScreen(context);
         },
-        child: Hero(
-          tag: uri.path,
-          child: ShowMediaItem(uri: uri),
-        ),
+        child: ShowMediaItem(uri: uri),
       ),
     );
   }
@@ -46,7 +43,7 @@ class HomeGridViewItem extends StatelessWidget {
             opacity: animation,
             child: DetailsScreen(
               uri: uri,
-              height: constraints.maxHeight * 0.90,
+              height: constraints.maxHeight,
               onSave: () {
                 controller.addToSaveList(uri);
                 buildContext.read<MediasBloc>().add(SaveMedia(uri: uri));

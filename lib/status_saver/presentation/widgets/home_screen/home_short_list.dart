@@ -14,6 +14,7 @@ class HomeShortList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var length = controller.paths.length;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -32,8 +33,8 @@ class HomeShortList extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   padding: EdgeInsets.all(14),
                   child: Row(
-                    children: List.generate(controller.paths.length, (index) {
-                      var uri = controller.paths[index];
+                    children: List.generate(length, (index) {
+                      var uri = controller.paths[length - index - 1];
                       var tag = uri.path + "tag";
                       return ShortListItem(uri: uri, tag: tag);
                     }),

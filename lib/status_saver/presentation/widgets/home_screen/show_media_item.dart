@@ -21,7 +21,12 @@ class ShowMediaItem extends StatelessWidget {
     return isImage
         ? CircularItem(
             radius: 50,
-            child: CircleAvatar(backgroundImage: FileImage(File.fromUri(uri))),
+            child: Hero(
+              tag: uri.path,
+              child: CircleAvatar(
+                backgroundImage: FileImage(File.fromUri(uri)),
+              ),
+            ),
           )
         : VideoItem(uri: uri);
   }
