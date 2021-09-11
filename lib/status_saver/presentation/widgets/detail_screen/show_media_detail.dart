@@ -2,7 +2,7 @@ import 'package:flutter/material.dart'
     show BuildContext, Key, StatelessWidget, Widget;
 
 import '../../../data/models/models.dart';
-import '../widgets.dart' show ImageViewerWidget, VideoPlayerWidget;
+import '../widgets.dart' show CustomVideoPlayerWidget, ImageViewerWidget;
 
 class ShowMediaDetail extends StatelessWidget {
   const ShowMediaDetail({
@@ -19,5 +19,5 @@ class ShowMediaDetail extends StatelessWidget {
       mediaTypeFromString(uri.pathSegments.last.split('.')[1])
               .isOf(MediaType.Image)
           ? ImageViewerWidget(uri: uri, height: height)
-          : VideoPlayerWidget(path: uri.path, height: height);
+          : CustomVideoPlayerWidget(path: uri.path, height: height);
 }

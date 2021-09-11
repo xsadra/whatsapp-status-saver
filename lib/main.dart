@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:whatsapp_status_saver/core/logs/logger.dart';
 
 import 'injection_container.dart' as injection;
 import 'status_saver/data/models/models.dart';
@@ -12,6 +14,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await injection.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  logs.v('Run App');
+
+  if (!await Permission.storage.isGranted) {
+    logs.i('Ask for storage permission!');
+    bool isGranted = await Permission.storage.request().isGranted;
+    logs.i('Is storage permission isGranted: $isGranted');
+  }
 
   runApp(MainApp());
 }
@@ -19,6 +28,8 @@ void main() async {
 class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    logs.v('build MainApp');
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Status Saver',
