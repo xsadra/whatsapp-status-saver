@@ -14,6 +14,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await injection.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  logs.v('Run App');
+
+  if (!await Permission.storage.isGranted) {
+    logs.i('Ask for storage permission!');
+    bool isGranted = await Permission.storage.request().isGranted;
+    logs.i('Is storage permission isGranted: $isGranted');
+  }
 
   runApp(MainApp());
 }
