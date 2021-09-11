@@ -1,4 +1,5 @@
 export 'common/custom_icon_button.dart';
+export 'detail_screen/custom_video_player_widget.dart';
 export 'detail_screen/image_viewer_widget.dart';
 export 'detail_screen/show_media_detail.dart';
 export 'detail_screen/video_player_widget.dart';

@@ -17,13 +17,17 @@ dependencies:
   intl: ^0.17.0
   avatar_view: ^1.0.1
   animations: ^2.0.1
-#  fluttericon 2.0.0
-  path_provider: 2.0.2
+#  fluttericon: 2.0.0
+  path_provider: ^2.0.3
   get_it: ^7.2.0
   permission_handler: ^8.1.6
   dartz: ^0.10.0
-  flutter_bloc: ^7.2.0
-  video_player:
+  flutter_bloc: ^7.1.0
+  video_player: ^2.2.0
+  logger: ^1.1.0
+  flick_video_player: ^0.3.1
+  visibility_detector: ^0.2.0
+  android_intent_plus: ^2.0.0
 
 
 dev_dependencies:
