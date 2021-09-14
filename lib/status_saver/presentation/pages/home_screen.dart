@@ -1,3 +1,4 @@
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,28 +36,33 @@ class HomeScreen extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: SafeArea(
-          bottom: false,
-          child: GestureDetector(
-            onVerticalDragUpdate: _onVerticalGesture,
-            child: Container(
-              color: Color(0xffebebeb),
-              child: AnimatedBuilder(
-                animation: controller,
-                builder: (context, _) {
-                  return LayoutBuilder(
-                    builder: (context, constraints) {
-                      return Stack(
-                        children: [
-                          buildHomeBody(constraints),
-                          buildShortAndLongList(constraints),
-                          buildCloseLongLIstButton(constraints),
-                          buildHeaderSection(),
-                        ],
-                      );
-                    },
-                  );
-                },
+        body: DoubleBackToCloseApp(
+          snackBar: SnackBar(
+            content: Text('Tap back again to leave'),
+          ),
+          child: SafeArea(
+            bottom: false,
+            child: GestureDetector(
+              onVerticalDragUpdate: _onVerticalGesture,
+              child: Container(
+                color: Color(0xffebebeb),
+                child: AnimatedBuilder(
+                  animation: controller,
+                  builder: (context, _) {
+                    return LayoutBuilder(
+                      builder: (context, constraints) {
+                        return Stack(
+                          children: [
+                            buildHomeBody(constraints),
+                            buildShortAndLongList(constraints),
+                            buildCloseLongLIstButton(constraints),
+                            buildHeaderSection(),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
             ),
           ),
