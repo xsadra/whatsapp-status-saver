@@ -155,21 +155,28 @@ class HomeScreen extends StatelessWidget {
     return AnimatedPositioned(
       duration: kPanelTransition,
       top: controller.homeState == HomeState.normal
-          ? constraints.maxHeight
+          ? constraints.maxHeight - kCartBarHeight
           : kCartBarHeight,
-      left: controller.homeState == HomeState.normal ? 500 : 0,
+      left: 0,
       right: 0,
       height: 40,
-      child: IconButton(
-        tooltip: 'Close',
-        onPressed: () {
-          controller.changeHomeState(HomeState.normal);
-        },
-        icon: Icon(
-          Icons.keyboard_arrow_down,
-          size: 40,
+      child: RotatedBox(
+        quarterTurns: controller.homeState == HomeState.normal ? 2 : 0,
+        child: IconButton(
+          tooltip: 'Close',
+          onPressed: () {
+            controller.changeHomeState(
+              controller.homeState == HomeState.normal
+                  ? HomeState.cart
+                  : HomeState.normal,
+            );
+          },
+          icon: Icon(
+            Icons.keyboard_arrow_down,
+            size: 40,
+          ),
+          color: Colors.black87,
         ),
-        color: Colors.black87,
       ),
     );
   }
