@@ -35,11 +35,11 @@ class AskPermissionScreen extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: height / 3,
+            top: height / 3.3,
             left: 0.0,
             right: 0.0,
             child: Container(
-              height: height / 2.5,
+              height: height / 2,
               child: Padding(
                 padding: const EdgeInsets.only(left: 24.0, right: 24.0),
                 child: Column(

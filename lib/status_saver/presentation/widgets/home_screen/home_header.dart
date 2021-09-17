@@ -80,11 +80,11 @@ class HomeHeader extends StatelessWidget {
                 Expanded(
                   child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(right: 100.0),
+                      padding: const EdgeInsets.only(right: 70.0),
                       child: Text(
                         "Status Saver",
                         style: GoogleFonts.anton(
-                          fontSize: 45,
+                          fontSize: 40,
                           letterSpacing: 2,
                           color: Color(0xBB000000),
                         ),
