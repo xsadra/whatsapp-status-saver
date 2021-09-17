@@ -1,3 +1,4 @@
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,28 +36,33 @@ class HomeScreen extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: SafeArea(
-          bottom: false,
-          child: GestureDetector(
-            onVerticalDragUpdate: _onVerticalGesture,
-            child: Container(
-              color: Color(0xffebebeb),
-              child: AnimatedBuilder(
-                animation: controller,
-                builder: (context, _) {
-                  return LayoutBuilder(
-                    builder: (context, constraints) {
-                      return Stack(
-                        children: [
-                          buildHomeBody(constraints),
-                          buildShortAndLongList(constraints),
-                          buildCloseLongLIstButton(constraints),
-                          buildHeaderSection(),
-                        ],
-                      );
-                    },
-                  );
-                },
+        body: DoubleBackToCloseApp(
+          snackBar: SnackBar(
+            content: Text('Tap back again to leave'),
+          ),
+          child: SafeArea(
+            bottom: false,
+            child: GestureDetector(
+              onVerticalDragUpdate: _onVerticalGesture,
+              child: Container(
+                color: Color(0xffebebeb),
+                child: AnimatedBuilder(
+                  animation: controller,
+                  builder: (context, _) {
+                    return LayoutBuilder(
+                      builder: (context, constraints) {
+                        return Stack(
+                          children: [
+                            buildHomeBody(constraints),
+                            buildShortAndLongList(constraints),
+                            buildCloseLongLIstButton(constraints),
+                            buildHeaderSection(),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -149,21 +155,28 @@ class HomeScreen extends StatelessWidget {
     return AnimatedPositioned(
       duration: kPanelTransition,
       top: controller.homeState == HomeState.normal
-          ? constraints.maxHeight
+          ? constraints.maxHeight - kCartBarHeight
           : kCartBarHeight,
-      left: controller.homeState == HomeState.normal ? 500 : 0,
+      left: 0,
       right: 0,
       height: 40,
-      child: IconButton(
-        tooltip: 'Close',
-        onPressed: () {
-          controller.changeHomeState(HomeState.normal);
-        },
-        icon: Icon(
-          Icons.keyboard_arrow_down,
-          size: 40,
+      child: RotatedBox(
+        quarterTurns: controller.homeState == HomeState.normal ? 2 : 0,
+        child: IconButton(
+          tooltip: 'Close',
+          onPressed: () {
+            controller.changeHomeState(
+              controller.homeState == HomeState.normal
+                  ? HomeState.cart
+                  : HomeState.normal,
+            );
+          },
+          icon: Icon(
+            Icons.keyboard_arrow_down,
+            size: 40,
+          ),
+          color: Colors.black87,
         ),
-        color: Colors.black87,
       ),
     );
   }

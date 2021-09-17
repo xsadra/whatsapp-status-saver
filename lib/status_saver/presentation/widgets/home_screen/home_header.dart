@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:whatsapp_status_saver/status_saver/presentation/pages/pages.dart';
 
 import '../../../../core/constants/constants.dart'
@@ -14,22 +16,56 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Stack(
       children: [
         Positioned(
+          bottom: 0,
+          right: 0,
+          child: SvgPicture.asset(
+            'assets/images/svg_flower.svg',
+            height: 160,
+            color: Color(0x66FF8F00),
+          ),
+        ),
+        Positioned(
+          top: 0,
+          right: 0,
+          left: 0,
+          child: RotatedBox(
+            quarterTurns: 2,
+            child: SvgPicture.asset(
+              'assets/images/svg_b.svg',
+              width: width * 0.65,
+              color: Color(0x7605CF08),
+            ),
+          ),
+        ),
+        Positioned(
           top: 0,
           left: 0,
-          right: 0,
-          child: Image.asset(
-            'assets/images/header.jpg',
-            // height: 185,
-            fit: BoxFit.cover,
+          child: SvgPicture.asset(
+            'assets/images/svg_tl.svg',
+            height: 70,
+            color: Color(0x99FF0109),
+          ),
+        ),
+        Positioned(
+          bottom: -10,
+          left: -50,
+          child: RotatedBox(
+            quarterTurns: 2,
+            child: SvgPicture.asset(
+              'assets/images/svg_t.svg',
+              width: width * 0.95,
+              color: Color(0x660F8F8F),
+            ),
           ),
         ),
         Positioned(
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.black12,
+              color: Color(0x11ebebeb),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(kDefaultPadding),
                 bottomRight: Radius.circular(kDefaultPadding),
@@ -38,30 +74,24 @@ class HomeHeader extends StatelessWidget {
             height: kHeaderHeight,
             //color: Colors.black12,
             padding: const EdgeInsets.all(kDefaultPadding),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Spacer(),
-                    Text(
-                      "Good Morning!",
-                      style: Theme.of(context).textTheme.caption,
+                Expanded(
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 70.0),
+                      child: Text(
+                        "Status Saver",
+                        style: GoogleFonts.anton(
+                          fontSize: 40,
+                          letterSpacing: 2,
+                          color: Color(0xBB000000),
+                        ),
+                      ),
                     ),
-                    Spacer(),
-                    Text(
-                      "Status Saver",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline4!
-                          .copyWith(color: Colors.black54),
-                    ),
-                    Spacer(),
-                  ],
+                  ),
                 ),
-                Spacer(),
               ],
             ),
           ),
