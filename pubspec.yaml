@@ -3,7 +3,7 @@ description: WhatsApp Status Saver
 publish_to: 'none'
 homepage: https://app.sadra.at/whatsapp-status-saver
 repository: https://github.com/xsadra/whatsapp-status-saver.git
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ">=2.13.1 <3.0.0"
