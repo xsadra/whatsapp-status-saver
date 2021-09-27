@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="at.sadra.app.whatsappstatussaver">
+    package="at.sadra.app.whatsapp_status_saver">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -7,6 +7,7 @@
 
     <application
         android:requestLegacyExternalStorage="true"
+        android:name="androidx.multidex.MultiDexApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="Status Saver">
         <activity
