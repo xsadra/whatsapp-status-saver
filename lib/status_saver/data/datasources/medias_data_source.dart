@@ -22,6 +22,10 @@ class MediasDataSourceImpl implements MediasDataSource {
     return [
       Uri.parse('storage/emulated/0'),
       Uri.parse('storage/emulated/1'),
+      Uri.parse('storage/emulated/0/Android/media/com.whatsapp'),
+      Uri.parse('storage/emulated/1/Android/media/com.whatsapp'),
+      Uri.parse('storage/emulated/0/Android/media/com.whatsapp.w4b'),
+      Uri.parse('storage/emulated/1/Android/media/com.whatsapp.w4b'),
     ];
   }
 
